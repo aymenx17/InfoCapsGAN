@@ -107,8 +107,8 @@ def main():
 
     transform = transforms.Compose([
         transforms.Scale((args.image_size, args.image_size)),
-        transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,)) ])
-    
+        transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,)) ])
+
 
     #tensorboardX
     writer = SummaryWriter()
