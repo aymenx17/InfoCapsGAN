@@ -12,7 +12,7 @@ from torchvision import datasets
 from PIL import Image
 from network import *
 from loss import CapsuleLoss
-from gen_modules import squash
+from dis_modules import squash
 import torch.nn.functional as F
 from tensorboardX import SummaryWriter
 import scipy.stats as stats
@@ -33,7 +33,7 @@ parser.add_argument('--beta1', type=float, default=0.5)  # momentum1 in Adam
 parser.add_argument('--beta2', type=float, default=0.999)  # momentum2 in Adam
 
 # Generator and Discriminator hyperparameters
-parser.add_argument('--dim_real', type=int, default=42)
+parser.add_argument('--dim_real', type=int, default=62)
 
 
 
@@ -107,13 +107,13 @@ def main():
 
     transform = transforms.Compose([
         transforms.Scale((args.image_size, args.image_size)),
-        transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,)) ])
+    
 
     #tensorboardX
     writer = SummaryWriter()
 
-    dataset = datasets.MNIST('./MNIST', train=True, transform=transform, target_transform=None, download=True)
+    dataset = datasets.MNIST('./', train=True, transform=transform, target_transform=None, download=True)
 
 
     data_loader = data.DataLoader(dataset=dataset,

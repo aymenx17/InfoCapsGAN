@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from numpy import prod
 import dis_modules as Dis
 import gen_modules as Gen
-from main import squash
+from dis_modules import squash
 from torch.nn.init import kaiming_normal, calculate_gain
 
 
@@ -23,7 +23,7 @@ class Discriminator(nn.Module):
 		primary_caps = int(channels / primary_dim * ( img_shape[1] - 2*(kernel_size-1) ) * ( img_shape[2] - 2*(kernel_size-1) ) / 4)
 		self.digits = Dis.RoutingCapsules(primary_dim, primary_caps, num_classes, out_dim, num_routing)
 		self.real = Dis.RealOrFake(num_classes, out_dim, self.dim_real - 10, num_routing)
-		self.convR = nn.Conv1d(32, 1, 1)
+		self.convR = nn.Conv1d(52, 1, 1)
 	def forward(self, x):
 		out = self.conv1(x)
 		out = self.batchnorm(out)
