@@ -20,6 +20,20 @@ During training, in order for the discriminator to act as a classifier while cap
 ![epoch: 17](https://github.com/aymenx17/FullyCapsGAN/blob/master/project_images/generated-17-500.png)
 ![epoch: 17](https://github.com/aymenx17/FullyCapsGAN/blob/master/project_images/generated-17-600.png)
 
+
+### Environments
+
+- Pytorch 1.0
+- Python 3.6
+- opencv 3.4.1
+- numpy  1.16.2
+
+For a more comprehensive list of required packages you may refer to the file conda_environment.yaml
+You may also use conda package manager to recreate that specific working environment, with the following command:
+```python
+conda env create -f conda_environment.yaml
+```
+
 ### Training
 
 ```python
