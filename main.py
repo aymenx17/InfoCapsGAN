@@ -33,7 +33,7 @@ parser.add_argument('--beta1', type=float, default=0.5)  # momentum1 in Adam
 parser.add_argument('--beta2', type=float, default=0.999)  # momentum2 in Adam
 
 # Generator and Discriminator hyperparameters
-parser.add_argument('--dim_real', type=int, default=62)
+parser.add_argument('--dim_real', type=int, default=52)
 
 
 
@@ -158,26 +158,25 @@ def main():
             batch_size = images.size(0)
 
 
+
+            d_out_norm_real, dp_out_real, dc_out_real, dr_out_real, sf_real = discriminator(images)
+
             # reality_structure
-            real_struc = torch.randn(batch_size, 1, args.dim_real - 10) # -> (batch_size, 1, dim_real)
+            real_struc = torch.randn(batch_size, 1, args.dim_real) # -> (batch_size, 1, dim_real)
             real_struc = to_variable(real_struc)
-
-
-            dc = gen_dc(batch_size, 10)
-            dc = to_variable(dc)
-
-            real_struc = torch.cat((real_struc, dc.unsqueeze(1)), dim=-1)
             real_struc = squash(real_struc)
 
-            #
+            # dc = gen_dc(batch_size, 10)
+            # dc = to_variable(dc)
+            # real_struc = torch.cat((real_struc, dc.unsqueeze(1)), dim=-1)
+
             fake_images, gp_caps, gc_caps = generator(real_struc, epoch)
-            d_out_norm_real, dp_out_real, dc_out_real, dr_out_real, sf_real = discriminator(images)
             d_out_norm_fake, dp_out_fake, dc_out_fake, dr_out_fake, sf_fake = discriminator(fake_images)
 
 
             # Mutual Information Loss
             #d_loss_dc = -(torch.mean(torch.sum(dc * sf_fake, 1)) + 1)
-            d_loss_dc = margin(sf_fake, dc)*1e-02 + 1
+            #d_loss_dc = margin(sf_fake, dc)*1e-02 + 1
 
 
             # Euclidean distance
@@ -199,14 +198,8 @@ def main():
             cos_p = F.cosine_similarity(gp_caps, dp_out_fake, dim=-1)
             cos_p = torch.mean(torch.sum(cos_p, dim=-1))
 
-
-
-
             d_loss_a = -torch.mean(torch.log(d_out_norm_real[:,0]) + torch.log(1 - d_out_norm_fake[:,0]))
-
-
-            d_loss = d_loss_a + 1.0*d_loss_dc
-
+            d_loss = d_loss_a
 
 
             # Optimization
@@ -218,7 +211,7 @@ def main():
             # Fake -> Real
             g_loss_a = -torch.mean(torch.log(d_out_norm_fake[:,0]))
 
-            g_loss = g_loss_a + 1.0*d_loss_dc
+            g_loss = g_loss_a
 
 
             # Optimization
@@ -239,7 +232,8 @@ def main():
                     l1.append(round(c_norm_real[0, k].item(), 5))
                     l2.append(round(c_norm_fake[0, k].item(), 5))
                     l3.append(round(cg_norm[0, k].item(), 5))
-                    l4.append(dc[0,k].item())
+                    #l4.append(dc[0,k].item())
+                    l4.append(0)
 
                 print('\n\nc_norm_real {} \n\nc_norm_fake {} \n\ncg_norm {} \n\ndc {}'.format(l1,l2,l3,l4))
                 print('*'*100)
@@ -272,12 +266,12 @@ def main():
             # save the sampled images (10 Category(Discrete), 10 Continuous Code Generation : 10x10 Image Grid)
             if (i + 1) % args.sample_step == 0:
 
-                real_struc = torch.randn(100, 1, args.dim_real - 10)
-                tmp = np.zeros((100, 10))
-                for k in range(10):
-                    tmp[k * 10:(k + 1) * 10, k] = 1
-                tmp = torch.Tensor(tmp)
-                real_struc = torch.cat((real_struc, tmp.unsqueeze(1)), dim=-1)
+                real_struc = torch.randn(100, 1, args.dim_real)
+                # tmp = np.zeros((100, 10))
+                # for k in range(10):
+                #     tmp[k * 10:(k + 1) * 10, k] = 1
+                # tmp = torch.Tensor(tmp)
+                # real_struc = torch.cat((real_struc, tmp.unsqueeze(1)), dim=-1)
                 real_struc = to_variable(real_struc)
                 real_struc = squash(real_struc)
 
