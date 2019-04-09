@@ -1,4 +1,4 @@
-# FullyCapsGAN
+# InfoCapsGAN
 
 ### Introduction
 
@@ -11,7 +11,7 @@ During training, in order for the discriminator to act as a classifier while cap
 
 ### Network Architecture
 
-![Picture of network architecture](https://github.com/aymenx17/FullyCapsGAN/blob/master/project_images/FullyCapsGAN.png)
+![Picture of network architecture](https://github.com/aymenx17/InfoCapsGAN/blob/master/project_images/InfoCapsGAN.png)
 
 
 ### Environments
@@ -35,10 +35,9 @@ python main.py
 
 
 
-The current code implementation on the branch master reflects the architecture shown above in this repository. In this branch, however, the network design is not aligned with the final objective of this project, whereas it is in the branch called mimic.
-
-
 ### Branch: mimic
+
+The current code implementation on the branch master reflects the architecture shown above in this repository. In this branch, however, the network design is not aligned with the final objective of this project, whereas it is in the branch called mimic.
 
 Unlike in the standard architecture as in GAN theory where the input to the generator is randomly sampled, in here the input is the directly correlated to the output of the discriminator. More specifically in this implementation the last capsule layer of discrimination is provided as input to the generator, and currently the class info is not integrated in the network.
 
@@ -46,8 +45,8 @@ Unlike in the standard architecture as in GAN theory where the input to the gene
 
 ###### Training on unlabeled dataset at Epoch 17:
 
-![epoch: 17](https://github.com/aymenx17/FullyCapsGAN/blob/master/project_images/generated-18-500.png)
-![epoch: 17](https://github.com/aymenx17/FullyCapsGAN/blob/master/project_images/generated-18-600.png)
+![epoch: 17](https://github.com/aymenx17/InfoCapsGAN/blob/master/project_images/generated-18-500.png)
+![epoch: 17](https://github.com/aymenx17/InfoCapsGAN/blob/master/project_images/generated-18-600.png)
 
 
 ### Branch: master
@@ -59,8 +58,8 @@ The input to the generator is the concatenation of a one dimensional tensor of c
 
 ###### Training on unlabeled dataset at Epoch 17:
 
-![epoch: 17](https://github.com/aymenx17/FullyCapsGAN/blob/master/project_images/generated-17-500.png)
-![epoch: 17](https://github.com/aymenx17/FullyCapsGAN/blob/master/project_images/generated-17-600.png)
+![epoch: 17](https://github.com/aymenx17/InfoCapsGAN/blob/master/project_images/generated-17-500.png)
+![epoch: 17](https://github.com/aymenx17/InfoCapsGAN/blob/master/project_images/generated-17-600.png)
 
 
 
@@ -68,9 +67,9 @@ The input to the generator is the concatenation of a one dimensional tensor of c
 
 Working on mimic architecture:
    - Integrate class info and hence the technique of mutual information
-   - Developing proper constraints and penalization methods
+   - Develop proper constraints and penalization methods
 
 #### Looking for collaborators
 
 This project would require a team effort given the the number of experiments that has to be manually performed.
-It could also be a fun weekend project. Email: aymen.sayed.2017@gmail.com
+It can also be a fun weekend project. Email: aymen.sayed.2017@gmail.com
