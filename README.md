@@ -14,7 +14,7 @@ During training, in order for the discriminator to act as a classifier while cap
 ![Picture of network architecture](https://github.com/aymenx17/InfoCapsGAN/blob/master/project_images/InfoCapsGAN.png)
 
 
-### Environments
+### Environment
 
 - Pytorch 1.0
 - Python 3.6
