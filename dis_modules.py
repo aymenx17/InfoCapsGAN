@@ -19,6 +19,7 @@ def squash(s, dim=-1):
 	return squared_norm / (1 + squared_norm) * s / (torch.sqrt(squared_norm) + 1e-8)
 
 
+
 class PrimaryCapsules(nn.Module):
 	def __init__(self, in_channels, out_channels, dim_caps,
 	kernel_size=9, stride=2, padding=0):

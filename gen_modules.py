@@ -25,7 +25,6 @@ class GenCapsules(nn.Module):
 		self.W0 = nn.Parameter(torch.randn(1, num_caps, 1, dim_caps, dim_real)*(3/(dim_caps + num_caps + dim_real))**0.5)
 
 
-
 		self.dconv1 = nn.ConvTranspose2d(256, 1, 9, 1, 0)
 		self.dconv0 = nn.ConvTranspose2d(256, 256, 10, 2, 0)
 		torch.nn.init.xavier_normal_(self.dconv1.weight)

@@ -157,26 +157,28 @@ def main():
 
             batch_size = images.size(0)
 
-
-
             d_out_norm_real, dp_out_real, dc_out_real, dr_out_real, sf_real = discriminator(images)
 
-            # reality_structure
-            real_struc = torch.randn(batch_size, 1, args.dim_real) # -> (batch_size, 1, dim_real)
-            real_struc = to_variable(real_struc)
-            real_struc = squash(real_struc)
 
-            # dc = gen_dc(batch_size, 10)
-            # dc = to_variable(dc)
-            # real_struc = torch.cat((real_struc, dc.unsqueeze(1)), dim=-1)
+            train_rnd = True
+            # update training mode
+            if (epoch + 1 > 2):
+                train_rnd = False
+
+
+            if train_rnd:
+                # reality_structure
+                real_struc = torch.randn(batch_size, 1, args.dim_real) # -> (batch_size, 1, dim_real)
+                real_struc = to_variable(real_struc)
+                real_struc = squash(real_struc)
+            else:
+                #real_struc = dr_out_real.data.cpu().numpy()
+                real_struc = dr_out_real.detach()
+                #real_struc = to_variable(torch.FloatTensor(real_struc))
+
 
             fake_images, gp_caps, gc_caps = generator(real_struc, epoch)
             d_out_norm_fake, dp_out_fake, dc_out_fake, dr_out_fake, sf_fake = discriminator(fake_images)
-
-
-            # Mutual Information Loss
-            #d_loss_dc = -(torch.mean(torch.sum(dc * sf_fake, 1)) + 1)
-            #d_loss_dc = margin(sf_fake, dc)*1e-02 + 1
 
 
             # Euclidean distance
@@ -256,24 +258,18 @@ def main():
                 print('gp_norm\n {}'.format(l2))
                 print('*'*100)
 
-
-
             # print the log info
             if (i + 1) % args.log_step == 0:
-                print('Epoch [%d/%d], Step[%d/%d], d_loss: %.4f, g_loss: %.4f, dc_loss: %.4f, loss_p_caps: %.4f, loss_c_caps: %.4f, cos_p: %.4f, cos_c: %.4f'
-                      % (epoch + 1, args.num_epochs, i + 1, total_step, d_loss, g_loss, d_loss_dc, loss_p_caps, loss_c_caps, cos_p, cos_c ))
+                print('Epoch [%d/%d], Step[%d/%d], d_loss: %.4f, g_loss: %.4f, loss_p_caps: %.4f, loss_c_caps: %.4f, cos_p: %.4f, cos_c: %.4f'
+                      % (epoch + 1, args.num_epochs, i + 1, total_step, d_loss, g_loss, loss_p_caps, loss_c_caps, cos_p, cos_c ))
 
             # save the sampled images (10 Category(Discrete), 10 Continuous Code Generation : 10x10 Image Grid)
             if (i + 1) % args.sample_step == 0:
 
-                real_struc = torch.randn(100, 1, args.dim_real)
-                # tmp = np.zeros((100, 10))
-                # for k in range(10):
-                #     tmp[k * 10:(k + 1) * 10, k] = 1
-                # tmp = torch.Tensor(tmp)
-                # real_struc = torch.cat((real_struc, tmp.unsqueeze(1)), dim=-1)
-                real_struc = to_variable(real_struc)
-                real_struc = squash(real_struc)
+                # squash function on dr_out_real is already applied in the discriminator network
+                #real_struc = dr_out_real.data.cpu().numpy()
+                #real_struc = to_variable(torch.FloatTensor(real_struc))
+                real_struc = dr_out_real.detach()
 
                 fake_images, _, _ = generator(real_struc, epoch)
                 torchvision.utils.save_image(denorm(fake_images.data),
@@ -283,8 +279,6 @@ def main():
         # save the model parameters for each epoch
         g_path = os.path.join(args.model_path, 'generator-%d.pkl' % (epoch + 1))
         torch.save(generator.state_dict(), g_path)
-
-
 
 
 if __name__ == "__main__":

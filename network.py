@@ -38,7 +38,6 @@ class Discriminator(nn.Module):
 		preds = self.convR(r_caps.transpose(1,2)).squeeze(-1)
 		preds = torch.sigmoid(preds)
 
-
 		return preds, p_caps, c_caps, r_caps, norm_c
 
 
