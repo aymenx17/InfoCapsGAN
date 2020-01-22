@@ -6,7 +6,7 @@ In this work, I implemented a generative adversarial network based on the theori
 
 During training, in order for the discriminator to act as a classifier while capturing the class information from the unlabeled dataset, a random set of class labels, is given as input to the generator, whereas that exact set is used afterwards to penalize the discriminator. Hence the mutual information technique.
 
-[Link to a pdf report](https://drive.google.com/file/d/1QfRU8CRBMN7QZXcJDJ_ORfuZBA8wbX0j/view?usp=sharing)
+[Link to a pdf report](https://drive.google.com/open?id=16-0xJ0aDaJ_7UeneP4apcntHvhvQOGyX)
 
 
 ### Network Architecture
