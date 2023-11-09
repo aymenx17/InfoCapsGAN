@@ -63,13 +63,4 @@ The input to the generator is the concatenation of a one dimensional tensor of c
 
 
 
-### Next steps
 
-Working on mimic architecture:
-   - Integrate class info and hence the technique of mutual information
-   - Develop proper constraints and penalization methods
-
-#### Looking for collaborators
-
-This project would require a team effort given the the number of experiments that has to be manually performed.
-It can also be a fun weekend project. Email: aymen.sayed.2017@gmail.com
